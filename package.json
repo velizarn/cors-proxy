@@ -9,9 +9,11 @@
   "engines": {
     "node": "10.15.3"
   },
-  "main": "src/web.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node --optimize_for_size --max_old_space_size=460 --gc_interval=100 index.js"
+    "lint": "eslint --ext .js,.json,.jsx . --fix",
+    "start": "node --optimize_for_size --max_old_space_size=460 --gc_interval=100 index.js",
+    "start:dev": "nodemon --optimize_for_size --max_old_space_size=920 --gc_interval=100 index.js"
   },
   "dependencies": {
     "babel-eslint": "10.0.1",

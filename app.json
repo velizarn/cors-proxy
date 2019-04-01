@@ -1,0 +1,47 @@
+{
+  "name": "cors-proxy",
+  "description": "Simple cors proxy app",
+  "repository": "https://github.com/velizarn/cors-proxy.git",
+  "logo": "https://cdn.jsdelivr.net/gh/heroku/node-js-getting-started@master/public/node.svg",
+  "keywords": [
+    "connect-redis",
+    "heroku",
+    "node",
+    "redis"
+  ],
+  "buildpacks": [
+    { "url": "heroku/nodejs" }
+  ],
+  "addons": [
+    "heroku-redis:hobby-dev"
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free",
+      "command": "node --optimize_for_size --max_old_space_size=460 --gc_interval=100 index.js"
+    }
+  },
+  "env": {
+    "CACHE_TTL": {
+      "description": "TTL for session, in seconds",
+      "value": "3600",
+      "required": true
+    },
+    "LOG_LEVEL": {
+      "description": "Log level",
+      "value": "info",
+      "required": false
+    },
+    "ADDITIONAL_HEADERS": {
+      "description": "Headers to add",
+      "value": "{}",
+      "required": false
+    },
+    "REMOVE_HEADERS": {
+      "description": "Headers to remove, comma separated list",
+      "value": "",
+      "required": false
+    }
+  }
+}
