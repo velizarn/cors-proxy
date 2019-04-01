@@ -1,6 +1,6 @@
 {
   "name": "cors-proxy",
-  "description": "A demo setup for using Redis to handle session in Node.js",
+  "description": "Simple cors proxy app",
   "repository": "https://github.com/velizarn/cors-proxy.git",
   "logo": "https://cdn.jsdelivr.net/gh/heroku/node-js-getting-started@master/public/node.svg",
   "keywords": [
