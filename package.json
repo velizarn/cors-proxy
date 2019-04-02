@@ -11,9 +11,12 @@
   },
   "main": "src/index.js",
   "scripts": {
+    "heroku-prebuild": "echo This runs before Heroku installs your dependencies.",
+    "heroku-postbuild": "echo This runs afterwards.",
     "lint": "eslint --ext .js,.json,.jsx . --fix",
     "start": "node --optimize_for_size --max_old_space_size=460 --gc_interval=100 src/index.js",
-    "start:dev": "nodemon --optimize_for_size --max_old_space_size=920 --gc_interval=100 src/index.js"
+    "start:dev": "nodemon --optimize_for_size --max_old_space_size=920 --gc_interval=100 src/index.js",
+    "start:local": "nf start"
   },
   "dependencies": {
     "babel-eslint": "10.0.1",
