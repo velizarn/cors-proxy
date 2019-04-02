@@ -40,7 +40,7 @@ const middlewareMethod = (req, res, next) => {
 
 const middlewareTargetUrl = (req, res, next) => {
   req.app.locals.requestedUrl = `${req.protocol}://${req.originalUrl.replace('/', '')}`;
-  req.app.locals.requestedUrlHashed = `h${  hashed(req.app.locals.requestedUrl)}`;
+  req.app.locals.requestedUrlHashed = `h${hashed(req.app.locals.requestedUrl)}`;
   return next();
 };
 
