@@ -12,8 +12,11 @@ const {
 } = process.env;
   
 const
+  crypto = require('crypto'),
   Logger = require('heroku-logger').Logger,
   logger = new Logger({ level: LOG_LEVEL});
+
+const hashed = (inputStr) => crypto.createHash('md5').update(inputStr).digest('hex');
 
 const middlewareDefaultUri = (req, res, next) => {
   if (req.originalUrl === '/') {
@@ -25,8 +28,19 @@ const middlewareDefaultUri = (req, res, next) => {
   next();
 };
 
+const middlewareMethod = (req, res, next) => {
+  if (req.method.toLowerCase() !== 'get') {
+    res.status(405);
+    res.send('405 Method Not Allowed');
+    res.end();
+    return;
+  }
+  next();
+};
+
 const middlewareTargetUrl = (req, res, next) => {
   req.app.locals.requestedUrl = `${req.protocol}://${req.originalUrl.replace('/', '')}`;
+  req.app.locals.requestedUrlHashed = `h${  hashed(req.app.locals.requestedUrl)}`;
   return next();
 };
 
@@ -51,7 +65,7 @@ const middlewareWhitelistDomains = (req, res, next) => {
     }
           
   } catch (err) {
-    logger.error(err + '');
+    logger.error(`${err  }`);
     res.status(400);
     res.send('Bad Request');
     res.end();
@@ -79,7 +93,8 @@ const middlewareAmpProxy = (req, res, next) => {
   if (req.headers['amp-same-origin'] === 'true') {
     origin = sourceOrigin;
     // If allowed CORS origin & allowed source origin
-  } else if (allowedOrigins.indexOf(req.headers.origin) !== -1 && sourceOrigin === AMP_ALLOWED_SOURCE_ORIGIN) {
+  } else if (allowedOrigins.indexOf(req.headers.origin) !== -1 &&
+      sourceOrigin === AMP_ALLOWED_SOURCE_ORIGIN) {
     origin = req.headers.origin;
   } else {
     res.statusCode = 401;
@@ -95,6 +110,7 @@ const middlewareAmpProxy = (req, res, next) => {
 
 module.exports = {
   middlewareDefaultUri,
+  middlewareMethod,
   middlewareTargetUrl,
   middlewareProxyHeaders,
   middlewareAmpProxy,

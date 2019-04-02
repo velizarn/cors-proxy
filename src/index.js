@@ -13,8 +13,7 @@ const {
   LOG_LEVEL = 'error',
   NODE_ENV,
   PORT = defaults.appPort,
-  REMOVE_HEADERS = '',
-  REMOVE_ORIGIN_HEADERS = ''
+  REMOVE_HEADERS = ''
 } = process.env;
   
 const
@@ -30,6 +29,7 @@ const logger = new Logger({ level: LOG_LEVEL});
 
 const {
   middlewareDefaultUri,
+  middlewareMethod,
   middlewareTargetUrl,
   middlewareProxyHeaders,
   middlewareAmpProxy,
@@ -61,18 +61,18 @@ function startWorker(workerId) {
     .use(bodyParser.urlencoded({ extended: false }))
     .use(bodyParser.json())
     .use(middlewareDefaultUri)
+    .use(middlewareMethod)
     .use(middlewareTargetUrl)
     .use(middlewareProxyHeaders)
     .use(middlewareAmpProxy)
     .use(middlewareWhitelistDomains);
   
-  REMOVE_ORIGIN_HEADERS.replace(', ', ',').split(',').forEach((header) => {
-    app.set(header, false);
-  });
+  app.disable('etag');
+  app.disable('x-powered-by');
   
   app.all('*', (req, res) => {
     
-    let originalHeaders = req.headers;
+    const originalHeaders = req.headers;
     
     delete originalHeaders.host;
     
@@ -84,7 +84,7 @@ function startWorker(workerId) {
     })
       .then((response) => {
       
-        let responseHeaders = response.headers;
+        const responseHeaders = response.headers;
         
         REMOVE_HEADERS.split(',').forEach((item) => {
           if (item in responseHeaders) {
@@ -100,9 +100,9 @@ function startWorker(workerId) {
         res.end();
       })
       .catch((err) => {
-        logger.error(err + '');
+        logger.error(`${err  }`);
         res.status(500);
-        res.send(err + '');
+        res.send(`${err  }`);
         res.end();
       });
       
