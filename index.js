@@ -9,18 +9,19 @@ const defaults = require('./defaults');
 const WORKERS = process.env.WEB_CONCURRENCY || require('os').cpus().length;
 
 const {
+  ADDITIONAL_HEADERS = null,
   CACHE_TTL = defaults.cacheTtl,
-  NODE_ENV,
+  HEROKU_APP_NAME = '',
   LOG_LEVEL = 'error',
+  NODE_ENV,
   PORT = defaults.appPort,
   PROXY_URL,
-  ADDITIONAL_HEADERS = null,
   REMOVE_HEADERS = '',
-  HEROKU_APP_NAME = ''
+  WHITELIST_DOMAINS = ''
 } = process.env;
 
 const
-  http = require('http'),
+  http = require('https'),
   Logger = require('heroku-logger').Logger,
   path = require('path'),
   request = require('request-promise'),
@@ -51,6 +52,14 @@ function startMaster() {
 function startWorker(workerId) {
   
   http.createServer((req, res) => {
+	  
+    if (req.url === '/') {
+      const _myDate = (new Date()).toLocaleString();
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.write(_myDate);
+      res.end();
+      return;
+    }
     
     request({
       uri: `http://${req.url.replace('/', '')}`,
