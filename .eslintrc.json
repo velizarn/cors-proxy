@@ -3,7 +3,8 @@
     "browser": true,
     "commonjs": true,
     "es6": true,
-    "node": true
+    "node": true,
+    "mocha": true
   },
   "extends": [
     "eslint:recommended",
@@ -23,6 +24,10 @@
     "security"
   ],
   "rules": {
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "eol-last": ["error", "always"],
+    "eqeqeq": ["error", "smart"],
     "indent": [
       "error",
       2
@@ -31,12 +36,24 @@
       "error",
       "unix"
     ],
+    "max-len": [
+      "error", {
+        "code": 100,
+        "tabWidth": 2,
+        "ignoreComments": true,
+        "ignoreUrls": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
     "no-undef": [
       "error",
       {
         "typeof": true
       }
     ],
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-template": "error",
     "quotes": [
       "error",
       "single"
