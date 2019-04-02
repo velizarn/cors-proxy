@@ -13,7 +13,8 @@ const {
   LOG_LEVEL = 'error',
   NODE_ENV,
   PORT = defaults.appPort,
-  REMOVE_HEADERS = ''
+  REMOVE_HEADERS = '',
+  REMOVE_ORIGIN_HEADERS = ''
 } = process.env;
   
 const
@@ -64,7 +65,11 @@ function startWorker(workerId) {
     .use(middlewareProxyHeaders)
     .use(middlewareAmpProxy)
     .use(middlewareWhitelistDomains);
-
+  
+  REMOVE_ORIGIN_HEADERS.replace(', ', ',').split(',').forEach((header) => {
+    app.set(header, false);
+  });
+  
   app.all('*', (req, res) => {
     
     let originalHeaders = req.headers;
@@ -90,13 +95,7 @@ function startWorker(workerId) {
         const headers = Object.assign({}, responseHeaders, req.app.locals.proxyHeaders);
         
         res.status(response.statusCode);
-        
-        for (var property in headers) {
-          if (headers.hasOwnProperty(property)) {
-            res.set(property, headers[property.toString()]);
-          }
-        }
-        
+        res.set(headers);
         res.send(response.body);
         res.end();
       })
