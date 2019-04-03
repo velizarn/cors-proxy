@@ -19,7 +19,7 @@ const
 const hashed = (inputStr) => crypto.createHash('md5').update(inputStr).digest('hex');
 
 const middlewareDefaultUri = (req, res, next) => {
-  if (req.originalUrl === '/') {
+  if (req.path === '/') {
     res.status(200);
     res.send((new Date()).toLocaleString());
     res.end();
@@ -28,7 +28,7 @@ const middlewareDefaultUri = (req, res, next) => {
   next();
 };
 
-const middlewareMethod = (req, res, next) => {
+const middlewareHTTPMethod = (req, res, next) => {
   if (req.method.toLowerCase() !== 'get') {
     res.status(405);
     res.send('405 Method Not Allowed');
@@ -39,7 +39,7 @@ const middlewareMethod = (req, res, next) => {
 };
 
 const middlewareTargetUrl = (req, res, next) => {
-  req.app.locals.requestedUrl = `${req.protocol}://${req.originalUrl.replace('/', '')}`;
+  req.app.locals.requestedUrl = `${req.protocol}://${req.path.replace('/', '')}`;
   req.app.locals.requestedUrlHashed = `h${hashed(req.app.locals.requestedUrl)}`;
   return next();
 };
@@ -110,7 +110,7 @@ const middlewareAmpProxy = (req, res, next) => {
 
 module.exports = {
   middlewareDefaultUri,
-  middlewareMethod,
+  middlewareHTTPMethod,
   middlewareTargetUrl,
   middlewareProxyHeaders,
   middlewareAmpProxy,
