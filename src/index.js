@@ -17,11 +17,9 @@ const {
 } = process.env;
   
 const
-  bodyParser = require('body-parser'),
   express = require('express'),
   helmet = require('helmet'),
   Logger = require('heroku-logger').Logger,
-  path = require('path'),
   request = require('request-promise'),
   throng = require('throng');
 
@@ -29,7 +27,7 @@ const logger = new Logger({ level: LOG_LEVEL});
 
 const {
   middlewareDefaultUri,
-  middlewareMethod,
+  middlewareHTTPMethod,
   middlewareTargetUrl,
   middlewareProxyHeaders,
   middlewareAmpProxy,
@@ -58,10 +56,8 @@ function startWorker(workerId) {
   
   app
     .use(helmet())
-    .use(bodyParser.urlencoded({ extended: false }))
-    .use(bodyParser.json())
     .use(middlewareDefaultUri)
-    .use(middlewareMethod)
+    .use(middlewareHTTPMethod)
     .use(middlewareTargetUrl)
     .use(middlewareProxyHeaders)
     .use(middlewareAmpProxy)
