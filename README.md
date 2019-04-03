@@ -30,6 +30,7 @@ WHITELIST_DOMAINS=example.com,www.example.com
 - https://www.ampproject.org/docs/fundamentals/amp-cors-requests
 - https://www.npmjs.com/package/request-promise
 - https://devcenter.heroku.com/articles/config-vars
+- https://devcenter.heroku.com/articles/heroku-local
 - https://nodejs.org/docs/latest/api/url.html
 - https://expressjs.com/en/api.html
 - https://www.tutorialsteacher.com/nodejs/create-nodejs-web-server
