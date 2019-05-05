@@ -10,7 +10,8 @@
     "redis"
   ],
   "buildpacks": [
-    { "url": "heroku/nodejs" }
+    { "url": "heroku/nodejs" },
+    { "url": "velizarn/heroku-buildpack-nano" }
   ],
   "addons": [
     "heroku-redis:hobby-dev"
