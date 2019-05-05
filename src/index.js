@@ -20,10 +20,9 @@ const
   express = require('express'),
   helmet = require('helmet'),
   Logger = require('heroku-logger').Logger,
+  logger = new Logger({ level: LOG_LEVEL}),
   request = require('request-promise'),
   throng = require('throng');
-
-const logger = new Logger({ level: LOG_LEVEL});
 
 const {
   middlewareDefaultUri,
