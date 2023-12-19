@@ -28,7 +28,7 @@
     "express-validator": "6.2.0",
     "helmet": "3.21.2",
     "heroku-logger": "0.3.3",
-    "redis": "2.8.0",
+    "redis": "4.6.12",
     "request": "2.88.0",
     "request-promise": "4.2.4",
     "sqreen": "1.36.1",
